@@ -104,7 +104,7 @@ else if(d.a=='dr'){S.rules.splice(+d.i,1);mark();render()}else if(d.a=='ar'){S.r
 else if(e.target.id=='dadd'){if(!D.title.trim()&&!D.text.trim()){alert('Write a title or note first');return}S.posts.unshift({type:D.type,date:D.date,title:D.title.trim()||'Farm update',text:D.text.trim(),img:D.img});D={...D,title:'',text:'',img:''};mark();render()}
 else if(d.a=='pub'&&dirty){const s=$('#pst');s.textContent='Publishing…';try{const r=await sb.from('site').upsert({id:1,data:S});if(r.error)throw r.error;dirty=false;render();alert('Published. Everyone can now see your changes.')}catch(x){s.textContent=x.code=='conflict'?'Someone else published — reloading':'Could not publish: '+(x.message||x.code)}}});
 render();
-const SUPA_URL='PASTE_SUPABASE_URL',SUPA_KEY='PASTE_SUPABASE_ANON_KEY';let sb=null;
+const SUPA_URL='https://anedtxhnarjpkcapyrzx.supabase.co',SUPA_KEY='PASTE_SUPABASE_ANON_KEY';let sb=null;
 async function adminLogin(){if(!sb){alert('Backend not configured yet (see README)');return}const email=prompt('Admin email');if(!email)return;const password=prompt('Password');if(!password)return;const r=await sb.auth.signInWithPassword({email,password});if(r.error){alert(r.error.message);return}can=true;render()}
 (async()=>{if(!window.supabase||SUPA_URL.startsWith('PASTE'))return;sb=supabase.createClient(SUPA_URL,SUPA_KEY);try{const r=await sb.from('site').select('data').eq('id',1).maybeSingle();if(r.data&&r.data.data){S=Object.assign(S,r.data.data);S.videos=S.videos||[];S.yt=S.yt||{channel:'',items:[]};render()}const s=await sb.auth.getSession();if(s.data.session){can=true;render()}}catch(x){console.error(x)}})();
 </script></body></html>
